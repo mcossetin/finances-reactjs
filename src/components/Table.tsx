@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Skeleton } from '@mui/material';
+import { Chip, Skeleton } from '@mui/material';
 
 function createData(
     name: string,
@@ -18,7 +18,7 @@ function createData(
     return { name, calories, fat, carbs, protein };
 }
 
-const rows = [
+const rowsDemo = [
     createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
     createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
     createData('Eclair AAAASDDDDDDDDDD', 262, 16.0, 24, 6.0),
@@ -29,48 +29,76 @@ const rows = [
 
 
 interface Props {
-    loading?: boolean
+    loading?: boolean;
+    rows?: any[] | null;
+    columns?: any[] | null;
+}
+
+function createCell(col: any, value: number | string) {
+    if (col['type'] == 'date')
+        return new Date(value).toLocaleDateString()
+    else if (col['type'] == 'chip' && typeof value === "string")
+        return (
+            <Chip label={value.toLowerCase()} color="primary" size="small" style={{ backgroundColor: col['colors'][value] }} />
+        )
+    else if (col['type'] == 'currency' && typeof value === "number")
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+        }).format(value);
+    return value
 }
 
 
-function TableUI({ loading = false }: Props) {
+function TableUI({ loading = false, rows, columns }: Props) {
 
-    const NUM_COLUMNS = 5
-    
-    const columns = []
+    const NUM_COLUMNS = 10
+
+    const columnsLoading = []
     for (var i = 0; i < NUM_COLUMNS; i++)
-        columns.push(<TableCell><Skeleton width={100}/></TableCell>)
+        columnsLoading.push(<TableCell><Skeleton width={100} /></TableCell>)
 
     return (
         <TableContainer component={Paper}>
             <Table size="small" aria-label="a dense table">
                 <TableHead>
-                    {!loading && 
-                        
-                        <TableRow>
-                            <TableCell>Dessert (100g)</TableCell>
-                            <TableCell align="right">Calories</TableCell>
-                            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                        </TableRow>
-                    }
+                    <TableRow>
+                        {columns?.map((col) =>
+                            <TableCell align="right" variant="head">
+                                {col['label']}
+                            </TableCell>
+                        )
+                        }
+
+                    </TableRow>
                 </TableHead>
                 <TableBody>
-                    {loading ? [<TableRow>{columns}</TableRow>, <TableRow>{columns}</TableRow>, <TableRow>{columns}</TableRow>, <TableRow>{columns}</TableRow>]
+                    {loading || !rows ? [<TableRow>{columnsLoading}</TableRow>, <TableRow>{columnsLoading}</TableRow>, <TableRow>{columnsLoading}</TableRow>, <TableRow>{columnsLoading}</TableRow>]
                         :
                         rows.map((row) => (
                             <TableRow
-                                key={row.name}
+                                // key={row.name}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                                <TableCell component="th" scope="row">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="right">{row.calories}</TableCell>
-                                <TableCell align="right">{row.fat}</TableCell>
-                                <TableCell align="right">{row.carbs}</TableCell>
-                                <TableCell align="right">{row.protein}</TableCell>
+
+                                {
+                                    columns?.map((col) =>
+                                        <TableCell align="right">
+                                            {createCell(col, row[col['field']])}
+                                        </TableCell>
+                                    )
+                                }
+
+                                {/*                                 
+                                <TableCell align="right">{row['qtd']}</TableCell>
+                                <TableCell align="right">{row['type']}</TableCell> */}
+                                {/* // <TableCell component="th" scope="row">
+                                //     {row.name}
+                                // </TableCell>
+                                // <TableCell align="right">{row.calories}</TableCell>
+                                // <TableCell align="right">{row.fat}</TableCell>
+                                // <TableCell align="right">{row.carbs}</TableCell>
+                                // <TableCell align="right">{row.protein}</TableCell> */}
                             </TableRow>
                         ))
 

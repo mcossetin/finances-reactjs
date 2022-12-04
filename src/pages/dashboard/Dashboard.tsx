@@ -20,12 +20,11 @@ function Dashboard() {
     return (
         <Box sx={{ flexGrow: 1 }}>
             {showUpdate &&
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                <Grid spacing={2}>
+                    <Grid item direction="column">
                         <IconButton onClick={() => setShowUpdate(false)} >
                             <CloseIcon fontSize="large" />
                         </IconButton>
-
                         <StatementPage />
                     </Grid>
 
@@ -43,7 +42,7 @@ function Dashboard() {
                     Rendimentos
                 </Grid>
                 <Grid item>
-                    <Position />                   
+                    <Position />
                 </Grid>
             </Grid>
             }
