@@ -1,11 +1,14 @@
 
+import { Grid } from '@mui/material';
 import Dashboard from './pages/dashboard/Dashboard';
+import UpdatePage from './pages/update/UpdatePage';
 
 function App() {
   return (
-    <div className="App">
-      <Dashboard />
-    </div>
+    <Grid className="App" container >
+      {/* <Dashboard /> */}
+      <UpdatePage />
+    </Grid>
   );
 }
 

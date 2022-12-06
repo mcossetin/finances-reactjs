@@ -37,6 +37,8 @@ interface Props {
 function createCell(col: any, value: number | string) {
     if (col['type'] == 'date')
         return new Date(value).toLocaleDateString()
+    else if (col['type'] == 'datetime')
+        return new Date(value).toLocaleString()
     else if (col['type'] == 'chip' && typeof value === "string")
         return (
             <Chip label={value.toLowerCase()} color="primary" size="small" style={{ backgroundColor: col['colors'][value] }} />
