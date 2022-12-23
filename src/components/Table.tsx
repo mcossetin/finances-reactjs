@@ -48,6 +48,8 @@ function createCell(col: any, value: number | string) {
             style: 'currency',
             currency: 'BRL',
         }).format(value);
+    else if (col['type'] == 'percent' && typeof value === "number")
+        return (value * 100).toFixed(2) + "%"
     return value
 }
 
