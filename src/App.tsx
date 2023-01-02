@@ -8,6 +8,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import StatementPage from './pages/statement/Statement';
+import RebalancingPage from './pages/rebalancing/RebalancingPage';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/atualizacao",
     element: <UpdatePage />,
+  },
+  {
+    path: "/rebalanceamento",
+    element: <RebalancingPage />,
   }
 ]);
 

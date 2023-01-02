@@ -32,6 +32,8 @@ function createCell(col: any, value: number | string) {
         }).format(value);
     else if (col['type'] == 'percent' && typeof value === "number")
         return (value * 100).toFixed(2) + "%"
+        else if (col['type'] == 'float' && typeof value === "number")
+        return (value).toFixed(col['rounds'])
     return value
 }
 
@@ -63,7 +65,6 @@ function TableUI({ loading = false, rows, columns }: Props) {
                         :
                         rows.map((row) => (
                             <TableRow
-                                // key={row.name}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
 
